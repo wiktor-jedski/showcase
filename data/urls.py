@@ -1,0 +1,10 @@
+from django.urls import path
+
+from data import views
+
+app_name = 'data'
+
+urlpatterns = [
+    path('', views.analysis_list, name='analysis_list'),
+    path('programming_languages/', views.programming_languages, name='programming_languages'),
+]

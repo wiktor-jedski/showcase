@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}Data Analysis - Programming Languages{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-5">Programming Languages</h1>
+<div class="row justify-content-center">
+    <p>Some text</p>
+    {{ plot_raw|safe }}
+</div>
+{% endblock %}
