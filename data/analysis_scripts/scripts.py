@@ -7,7 +7,7 @@ from django.contrib.staticfiles import finders
 from io import StringIO
 
 
-def programming_languages_analysis(*args: List[str]):
+def programming_languages_analysis(choices: List[str] = None):
     """
     Takes a list of programming languages names.
     Returns an analysis of usage of given names in StackOverflow.
@@ -43,16 +43,16 @@ def programming_languages_analysis(*args: List[str]):
 
     # plots
     counts = []
-    if not args:
-        args = ['java', 'python']
-    for arg in args:
+    if not choices:
+        choices = ['java', 'python']
+    for arg in choices:
         counts.append(dataset[dataset['Programming Language'] == arg])
 
     colors = list(mcolors.TABLEAU_COLORS.values())
     fig1 = plt.figure()
     for i in range(len(counts)):
         plt.plot(counts[i]['Month'].values, counts[i]['Query Count'].values,
-                 color=colors[i], label=args[i])
+                 color=colors[i], label=choices[i])
     plt.xlabel('Month')
     plt.ylabel('Number of queries')
     plt.title('StackOverflow Threads')
@@ -66,7 +66,7 @@ def programming_languages_analysis(*args: List[str]):
     fig2 = plt.figure()
     for i in range(len(counts)):
         plt.plot(counts[i]['Month'].values, counts[i]['Query Count'].rolling(6).mean(),
-                 color=colors[i], label=args[i])
+                 color=colors[i], label=choices[i])
     plt.xlabel('Month')
     plt.ylabel('Number of queries')
     plt.title('StackOverflow Threads (with 6 months rolling mean)')

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 
 from data import forms
 from data.analysis_scripts.scripts import programming_languages_analysis
@@ -16,11 +17,17 @@ def programming_languages(request):
     """
     Renders a view for analysis of programming languages threads in StackOverflow.
     """
-    form = forms.LanguagesForm()
     if request.method == 'GET':
         context = programming_languages_analysis()
+        context['form'] = forms.LanguagesForm()
         return render(request, 'data/programming_languages.html', context)
     elif request.method == 'POST':
-        choices = form.cleaned_data['choices']
-        context = programming_languages_analysis(choices)
-        return render(request, 'data/programming_languages.html', context)
+        form = forms.LanguagesForm(request.POST)
+        if form.is_valid():
+            choices = form.cleaned_data['choices']
+            print(choices)
+            context = programming_languages_analysis(choices)
+            context['form'] = forms.LanguagesForm()
+            return render(request, 'data/programming_languages.html', context)
+        else:
+            return reverse('data:programming_languages')

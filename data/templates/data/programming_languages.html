@@ -8,7 +8,32 @@
 {% block content %}
 <h1 class="text-center mb-5">Programming Languages</h1>
 <div class="row justify-content-center">
-    <p>Some text</p>
+    <h4 class="text-center">Data preprocessing</h4>
+    <p>Head (first 5 rows)</p>
+    {{ head }}
+    <p>Tail (last 5 rows)</p>
+    {{ tail }}
+    <p>Shape of the data set: {{ shape }}</p>
+    <p>Column names: {{ column_names }}</p>
+    <p>Entry count: {{ entry_count }}</p>
+    <p>N\A values?: {{ is_na }}</p>
+    <p>Duplicate values?: {{ is_duplicated }}</p>
+    <hr>
+    <h4 class="text-center">Data analysis</h4>
+    <p>Number of months with posts on the website per language:</p>
+    {{ months_per_language }}
+    <p>Number of posts per language:</p>
+    {{ posts_per_language }}
+    <p>Raw plot of comparison of number of posts for selected languages:</p>
     {{ plot_raw|safe }}
+    <p>Smooth plot of comparison of number of posts for selected languages:</p>
+    {{ plot_rolling|safe }}
+    <hr>
+    <h4 class="text-center">Get custom plots - choose languages</h4>
+    <form method="post" action="{% url 'data:programming_languages' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content="Submit" %}
+    </form>
 </div>
 {% endblock %}
