@@ -20,6 +20,7 @@ def programming_languages_analysis(choices: List[str] = None):
     head = dataset.head()
     tail = dataset.tail()
     shape = dataset.shape
+    data_types = dataset.dtypes
     column_names = dataset.columns
     entry_count = []
     for i in range(len(column_names)):
@@ -33,10 +34,13 @@ def programming_languages_analysis(choices: List[str] = None):
     # find number of posts per language
     posts_per_language = dataset.groupby(['Programming Language']).agg('sum')\
         .sort_values('Query Count', ascending=False)
+    posts_per_language = posts_per_language.reset_index()
 
     # find number of months per language
     months_per_language = dataset.groupby(['Programming Language']).agg('count')\
         .sort_values('Query Count', ascending=False)['Month']
+    months_per_language = pd.DataFrame({'Programming Language': months_per_language.index,
+                                        'Count': months_per_language.values})
 
     # change Month column type to datetime
     dataset['Month'] = pd.to_datetime(dataset['Month'])
@@ -49,6 +53,8 @@ def programming_languages_analysis(choices: List[str] = None):
         counts.append(dataset[dataset['Programming Language'] == arg])
 
     colors = list(mcolors.TABLEAU_COLORS.values())
+    colors.extend([mcolors.CSS4_COLORS['lime'], mcolors.CSS4_COLORS['navy'],
+                   mcolors.CSS4_COLORS['tan'], mcolors.CSS4_COLORS['pink']])
     fig1 = plt.figure()
     for i in range(len(counts)):
         plt.plot(counts[i]['Month'].values, counts[i]['Query Count'].values,
@@ -79,5 +85,6 @@ def programming_languages_analysis(choices: List[str] = None):
 
     context = {'head': head, 'tail': tail, 'shape': shape, 'column_names': column_names, 'entry_count': entry_count,
                'is_na': is_na, 'is_duplicated': is_duplicated, 'posts_per_language': posts_per_language,
-               'months_per_language': months_per_language, 'plot_raw': plot_raw, 'plot_rolling': plot_rolling}
+               'months_per_language': months_per_language, 'plot_raw': plot_raw, 'plot_rolling': plot_rolling,
+               'data_types': data_types}
     return context

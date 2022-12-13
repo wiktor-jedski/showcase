@@ -9,31 +9,93 @@
 <h1 class="text-center mb-5">Programming Languages</h1>
 <div class="row justify-content-center">
     <h4 class="text-center">Data preprocessing</h4>
-    <p>Head (first 5 rows)</p>
-    {{ head }}
-    <p>Tail (last 5 rows)</p>
-    {{ tail }}
+    <div class="col-lg-4 col-md-8 col-sm-12 text-center mb-5">
+        <p>Head (first 5 rows)</p>
+        <table>
+            <tr>
+                {% for column in head.columns %}
+                <th class="px-2">{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for value in head.values %}
+            <tr>
+                {% for v in value %}
+                <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-lg-4 col-md-8 col-sm-12 text-center">
+        <p>Tail (last 5 rows)</p>
+        <table>
+            <tr>
+                {% for column in tail.columns %}
+                <th class="px-2">{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for value in tail.values %}
+            <tr>
+                {% for v in value %}
+                <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     <p>Shape of the data set: {{ shape }}</p>
-    <p>Column names: {{ column_names }}</p>
-    <p>Entry count: {{ entry_count }}</p>
-    <p>N\A values?: {{ is_na }}</p>
+    <p>Column names: {{ column_names.values }}</p>
+    <p>Data types: {{ data_types.values }}</p>
+    <p>Entry count per column: {{ entry_count }}</p>
+    <p>N\A values?: {{ is_na.values }}</p>
     <p>Duplicate values?: {{ is_duplicated }}</p>
+    <p>Actions needed: change column names to ['Month', 'Programming Language', 'Query Count'], optional - change type of the 'Month' column from object to datetime</p>
     <hr>
     <h4 class="text-center">Data analysis</h4>
-    <p>Number of months with posts on the website per language:</p>
-    {{ months_per_language }}
-    <p>Number of posts per language:</p>
-    {{ posts_per_language }}
+    <div class="col-lg-4 col-md-8 col-sm-12 text-center mb-5">
+        <p>Number of months with posts per language:</p>
+        <table>
+            <tr>
+                <th class="px-2">Programming Language</th>
+                <th class="px-2">Count</th>
+            </tr>
+            {% for m in months_per_language.values %}
+            <tr>
+                {% for v in m %}
+                <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+        <div class="col-lg-4 col-md-8 col-sm-12 text-center">
+        <p>Number of posts per language:</p>
+        <table>
+            <tr>
+                <th class="px-2">Programming Language</th>
+                <th class="px-2">Sum of posts</th>
+            </tr>
+            {% for p in posts_per_language.values %}
+            <tr>
+                {% for v in p %}
+                <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     <p>Raw plot of comparison of number of posts for selected languages:</p>
     {{ plot_raw|safe }}
     <p>Smooth plot of comparison of number of posts for selected languages:</p>
     {{ plot_rolling|safe }}
     <hr>
     <h4 class="text-center">Get custom plots - choose languages</h4>
-    <form method="post" action="{% url 'data:programming_languages' %}">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% bootstrap_button button_type="submit" content="Submit" %}
-    </form>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <form method="post" action="{% url 'data:programming_languages' %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_button button_type="submit" content="Submit" %}
+        </form>
+    </div>
 </div>
 {% endblock %}
