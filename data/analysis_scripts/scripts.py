@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,7 +7,7 @@ from django.contrib.staticfiles import finders
 from io import StringIO
 
 
-def programming_languages_analysis(choices: List[str] = None):
+def programming_languages_analysis(choices: List[str] = None) -> Dict:
     """
     Takes a list of programming languages names.
     Returns an analysis of usage of given names in StackOverflow.
@@ -87,4 +87,49 @@ def programming_languages_analysis(choices: List[str] = None):
                'is_na': is_na, 'is_duplicated': is_duplicated, 'posts_per_language': posts_per_language,
                'months_per_language': months_per_language, 'plot_raw': plot_raw, 'plot_rolling': plot_rolling,
                'data_types': data_types}
+    return context
+
+
+def google_analysis() -> Dict:
+    """
+    Returns a dictionary of variables to show the results of analysis of Bitcoin prices and unemployment.
+    """
+    # finding files
+    tesla = finders.find('data/TESLA Search Trend vs Price.csv')
+    btc_search = finders.find('data/Bitcoin Search Trend.csv')
+    btc_price = finders.find('data/Daily Bitcoin Price.csv')
+    unemployment = finders.find('data/UE Benefits Search vs UE Rate 2004-19.csv')
+    unemployment_covid = finders.find('data/UE Benefits Search vs UE Rate 2004-20.csv')
+
+    # reading files
+    df_tesla = pd.read_csv(tesla)
+    df_btc_search = pd.read_csv(btc_search)
+    df_btc_price = pd.read_csv(btc_price)
+    df_unemployment = pd.read_csv(unemployment)
+    df_benefits = pd.read_csv(unemployment_covid)
+
+    # data exploration
+    tesla_min = df_tesla.TSLA_WEB_SEARCH.min()
+    tesla_max = df_tesla.TSLA_WEB_SEARCH.max()
+    tesla_head = df_tesla.head()
+    tesla_tail = df_tesla.tail()
+    ue_description = df_unemployment.describe()
+    ue_description.insert(0, 'Statistic', ue_description.index)
+    ue_head = df_unemployment.head()
+    ue_tail = df_unemployment.tail()
+    btc_search_head = df_btc_search.head()
+    btc_search_tail = df_btc_search.tail()
+    btc_search_min = df_btc_search.BTC_NEWS_SEARCH.min()
+    btc_search_max = df_btc_search.BTC_NEWS_SEARCH.max()
+    btc_price_description = df_btc_price.describe()
+    btc_price_description.insert(0, 'Statistic', btc_price_description.index)
+    btc_price_head = df_btc_price.head()
+    btc_price_tail = df_btc_price.tail()
+
+    context = {'df_tesla': df_tesla, 'tesla_min': tesla_min, 'tesla_max': tesla_max, 'tesla_head': tesla_head,
+               'tesla_tail': tesla_tail, 'df_unemployment': df_unemployment, 'ue_description': ue_description,
+               'ue_head': ue_head, 'ue_tail': ue_tail, 'df_btc_search': df_btc_search, 'btc_search_min': btc_search_min,
+               'btc_search_head': btc_search_head, 'btc_search_tail': btc_search_tail, 'btc_search_max': btc_search_max,
+               'df_btc_price': df_btc_price, 'btc_price_description': btc_price_description,
+               'btc_price_head': btc_price_head, 'btc_price_tail': btc_price_tail}
     return context

@@ -2,14 +2,16 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from data import forms
-from data.analysis_scripts.scripts import programming_languages_analysis
+from data.analysis_scripts.scripts import programming_languages_analysis, google_analysis
+from data.models import Analysis
 
 
 def analysis_list(request):
-    context = {'analyses': [
-        {'link': 'data:programming_languages', 'photo': "data/languages.png",
-         'title': 'Programming Languages', 'text': 'An analysis of number of threads in StackOverflow.'}
-    ]}
+    # context = {'analyses': [
+    #     {'link': 'data:programming_languages', 'photo': "data/languages.png",
+    #      'title': 'Programming Languages', 'text': 'An analysis of number of threads in StackOverflow.'}
+    # ]}
+    context = {'analyses': Analysis.objects.all()}
     return render(request, 'data/analysis_list.html', context)
 
 
@@ -31,3 +33,11 @@ def programming_languages(request):
             return render(request, 'data/programming_languages.html', context)
         else:
             return reverse('data:programming_languages')
+
+
+def google_analytics(request):
+    """
+    Renders a view containing analysis of Google Trends data regarding unemployment and Bitcoin prices.
+    """
+    context = google_analysis()
+    return render(request, 'data/google_analytics.html', context)
