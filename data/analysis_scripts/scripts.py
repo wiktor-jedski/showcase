@@ -126,10 +126,45 @@ def google_analysis() -> Dict:
     btc_price_head = df_btc_price.head()
     btc_price_tail = df_btc_price.tail()
 
+    # missing values check
+    tesla_missing = df_tesla.isna().values.any()
+    ue_missing = df_unemployment.isna().values.any()
+    btc_search_missing = df_btc_search.isna().values.any()
+    btc_price_missing = df_btc_price.isna().values.any()
+    btc_price_missing_count = df_btc_price.isna().values.sum()
+    btc_missing_row = df_btc_price[df_btc_price.CLOSE.isna()].values
+
+    # duplicate check
+    tesla_duplicate = df_tesla.duplicated().values.any()
+    ue_duplicate = df_unemployment.duplicated().values.any()
+    btc_search_duplicate = df_btc_search.duplicated().values.any()
+    btc_price_duplicate = df_btc_price.duplicated().values.any()
+
+    # data type check
+    tesla_dtypes = df_tesla.dtypes
+    ue_dtypes = df_unemployment.dtypes
+    btc_search_dtypes = df_btc_search.dtypes
+    btc_price_dtypes = df_btc_price.dtypes
+
+    # change date/month column types to datetime
+    df_tesla.MONTH = pd.to_datetime(df_tesla.MONTH)
+    df_unemployment.MONTH = pd.to_datetime(df_unemployment.MONTH)
+    df_btc_price.DATE = pd.to_datetime(df_btc_price.DATE)
+    df_btc_search.MONTH = pd.to_datetime(df_btc_search.MONTH)
+
+    # drop nan values
+    df_btc_price = df_btc_price.dropna()
+
     context = {'df_tesla': df_tesla, 'tesla_min': tesla_min, 'tesla_max': tesla_max, 'tesla_head': tesla_head,
                'tesla_tail': tesla_tail, 'df_unemployment': df_unemployment, 'ue_description': ue_description,
                'ue_head': ue_head, 'ue_tail': ue_tail, 'df_btc_search': df_btc_search, 'btc_search_min': btc_search_min,
                'btc_search_head': btc_search_head, 'btc_search_tail': btc_search_tail, 'btc_search_max': btc_search_max,
                'df_btc_price': df_btc_price, 'btc_price_description': btc_price_description,
-               'btc_price_head': btc_price_head, 'btc_price_tail': btc_price_tail}
+               'btc_price_head': btc_price_head, 'btc_price_tail': btc_price_tail,
+               'tesla_missing': tesla_missing, 'tesla_duplicate': tesla_duplicate, 'ue_missing': ue_missing,
+               'ue_duplicate': ue_duplicate, 'btc_search_missing': btc_search_missing,
+               'btc_search_duplicate': btc_search_duplicate, 'btc_price_missing': btc_price_missing,
+               'btc_price_duplicate': btc_price_duplicate, 'btc_price_missing_count': btc_price_missing_count,
+               'btc_missing_row': btc_missing_row, 'tesla_dtypes': tesla_dtypes, 'ue_dtypes': ue_dtypes,
+               'btc_search_dtypes': btc_search_dtypes, 'btc_price_dtypes': btc_price_dtypes}
     return context

@@ -1,3 +1,5 @@
+from django.contrib.staticfiles import finders
+from django.http import FileResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -39,5 +41,5 @@ def google_analytics(request):
     """
     Renders a view containing analysis of Google Trends data regarding unemployment and Bitcoin prices.
     """
-    context = google_analysis()
-    return render(request, 'data/google_analytics.html', context)
+    file = finders.find('data/Google_Trends.zip')
+    return FileResponse(open(file, 'rb'), as_attachment=True)
