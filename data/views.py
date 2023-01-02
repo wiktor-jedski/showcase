@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from data import forms
-from data.analysis_scripts.scripts import programming_languages_analysis, google_analysis
+from data.analysis_scripts.scripts import programming_languages_analysis
 from data.models import Analysis
 
 
@@ -39,7 +39,15 @@ def programming_languages(request):
 
 def google_analytics(request):
     """
-    Renders a view containing analysis of Google Trends data regarding unemployment and Bitcoin prices.
+    Returns a file download containing analysis of Google Trends data regarding unemployment and Bitcoin prices.
     """
     file = finders.find('data/Google_Trends.zip')
+    return FileResponse(open(file, 'rb'), as_attachment=True)
+
+
+def lego_analysis(request):
+    """
+    Returns a file download containing analysis of LEGO sets and themes.
+    """
+    file = finders.find('data/Lego_Analysis.zip')
     return FileResponse(open(file, 'rb'), as_attachment=True)
