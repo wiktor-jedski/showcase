@@ -51,3 +51,11 @@ def lego_analysis(request):
     """
     file = finders.find('data/Lego_Analysis.zip')
     return FileResponse(open(file, 'rb'), as_attachment=True)
+
+
+def films_analysis(request):
+    """
+    Returns a file download containing analysis of films' budgets and revenues.
+    """
+    file = finders.find('data/Films_Budgets.zip')
+    return FileResponse(open(file, 'rb'), as_attachment=True)

@@ -9,8 +9,8 @@
 <h1 class="text-center mb-5">Data Analysis</h1>
 <div class="row justify-content-center">
   {% for analysis in analyses %}
-  <div class="col-lg-4 col-md-8 col-sm-12">
-    <div class="card mx-auto" style="width: 18rem;">
+  <div class="col-lg-3 col-md-4 col-sm-12">
+    <div class="card mx-auto my-3" style="width: 16rem;">
       <img src="{% static analysis.photo %}" class="card-img-top" alt="analysis photo">
       <div class="card-body">
         <h5 class="card-title">{{ analysis.title }}</h5>
