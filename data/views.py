@@ -59,3 +59,11 @@ def films_analysis(request):
     """
     file = finders.find('data/Films_Budgets.zip')
     return FileResponse(open(file, 'rb'), as_attachment=True)
+
+
+def nobel_analysis(request):
+    """
+    Returns a file download containing analysis of Nobel Prizes.
+    """
+    file = finders.find('data/Nobel_Prize_Analysis.zip')
+    return FileResponse(open(file, 'rb'), as_attachment=True)

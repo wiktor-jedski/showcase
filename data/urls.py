@@ -10,4 +10,5 @@ urlpatterns = [
     path('google_analytics/', views.google_analytics, name='google_analytics'),
     path('lego_analysis/', views.lego_analysis, name='lego_analysis'),
     path('films_analysis/', views.films_analysis, name='films_analysis'),
+    path('nobel_analysis/', views.nobel_analysis, name='nobel_analysis'),
 ]
